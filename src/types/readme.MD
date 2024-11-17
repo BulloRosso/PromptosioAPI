@@ -1,6 +1,6 @@
 # prompt.types.ts
 
-```
+```mermaid
 classDiagram
   class Prompt {
     +string id
