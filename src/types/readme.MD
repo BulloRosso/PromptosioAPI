@@ -26,3 +26,64 @@ classDiagram
     +string[] valueList
   }
 ```
+
+# condition.types.ts
+```mermaid
+classDiagram
+  class Tag {
+    +string name
+    +string type
+  }
+
+  class DynamicTag {
+    +Tag tag
+    +Condition condition
+  }
+
+  class BaseCondition {
+    +string envKey
+    +string type
+  }
+
+  class RangeCondition {
+    +number rangeMin
+    +number rangeMax
+  }
+
+  class MatcherCondition {
+    +string evalFunction
+    +string evalValue
+  }
+
+  class ListCondition {
+    +string[] valueList
+  }
+
+  BaseCondition <|-- RangeCondition
+  BaseCondition <|-- MatcherCondition
+  BaseCondition <|-- ListCondition
+```
+# metadata.types.ts
+```mermaid
+classDiagram
+  class Example {
+    +Record<string,any> input
+    +string expectedOutput
+    +Record<string,any> metadata
+  }
+
+  class Memory {
+    +string strategy
+    +number ttl
+    +string keyPattern
+  }
+
+  class PromptMetadata {
+    +string author
+    +string createdAt
+    +string updatedAt
+    +string description
+    +string category
+    +string[] labels
+  }
+```
