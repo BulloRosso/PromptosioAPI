@@ -1,0 +1,43 @@
+{
+  "name": "nodejs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.9.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.32.1",
+    "@dqbd/tiktoken": "^1.0.17",
+    "@langchain/anthropic": "^0.3.8",
+    "@langchain/community": "^0.3.15",
+    "@langchain/core": "^0.3.18",
+    "@langchain/openai": "^0.3.13",
+    "@nestjs/common": "^10.4.8",
+    "@nestjs/config": "^3.3.0",
+    "@nestjs/core": "^10.4.8",
+    "@nestjs/platform-express": "^10.4.8",
+    "@nestjs/swagger": "^8.0.7",
+    "@replit/object-storage": "^1.0.0",
+    "chromadb": "^1.9.2",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
+    "express": "^4.21.1",
+    "js-tiktoken": "^1.0.15",
+    "langchain": "^0.3.6",
+    "openai": "^4.72.0",
+    "tiktoken": "^1.0.17",
+    "zod": "^3.23.8"
+  }
+}
