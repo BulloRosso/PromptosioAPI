@@ -1,5 +1,6 @@
 # prompt.types.ts
 
+```
 classDiagram
   class Prompt {
     +string id
@@ -145,3 +146,4 @@ classDiagram
     +number regressionCount
     +number averageImpact
   }
+```
