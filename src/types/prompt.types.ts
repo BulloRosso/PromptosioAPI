@@ -1,16 +1,32 @@
 // src/types/eval.types.ts
+export interface NodePosition {
+  x: number;
+  y: number;
+}
+
 export interface Prompt {
   id: string;
   version: string;
   name: string;
   content: string;
+
   staticTags: string[];
   dynamicTags: any[];
   conditions: Condition[];
   supportedLanguages: string[];
   parentId?: string;
-  metadata?: any;
+  metadata?: PromptMetadata;
   config?: any;
+}
+
+export interface PromptMetadata {
+  author?: string;
+  createdAt: string;
+  updatedAt: string;
+  description?: string;
+  category?: string;
+  labels?: string[];
+  flowPosition?: NodePosition;
 }
 
 export interface PromptExecutionResult {
@@ -35,7 +51,7 @@ export interface PromptExecutionContext {
 
 export interface Condition {
   envKey: string;
-  type: 'matcher' | 'range' | 'list';
+  type: "matcher" | "range" | "list";
   evalFunction?: string;
   evalValue?: string;
   rangeMin?: number;
@@ -44,7 +60,7 @@ export interface Condition {
 }
 
 export interface ValidationRule {
-  type: 'required' | 'forbidden' | 'similarity' | 'custom';
+  type: "required" | "forbidden" | "similarity" | "custom";
   config: {
     phrases?: string[];
     threshold?: number;
@@ -93,7 +109,7 @@ export interface EvalResult {
     score?: number;
     details?: string;
   }[];
-  status: 'success' | 'failure';
+  status: "success" | "failure";
   error?: string;
   metadata?: Record<string, any>;
 }
@@ -120,7 +136,7 @@ export interface EvalRegression {
   regressions: {
     inputId: string;
     metricChanges: Partial<EvalMetrics>;
-    severity: 'low' | 'medium' | 'high';
+    severity: "low" | "medium" | "high";
     details: string;
   }[];
   summary: {

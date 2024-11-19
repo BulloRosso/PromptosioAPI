@@ -4,10 +4,12 @@ import {
   Get, 
   Post, 
   Put, 
+  Patch,
   Delete, 
   Body, 
   Param,
-  Query 
+  Query,
+  Logger
 } from '@nestjs/common';
 import { PromptsService } from './prompts.service';
 import { CreatePromptDto, UpdatePromptDto, ExecutePromptDto } from './dto';
@@ -17,7 +19,34 @@ import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 @ApiTags('prompts')
 @Controller('prompts')
 export class PromptsController {
+
+  private readonly logger = new Logger(PromptsController.name);
+ 
   constructor(private readonly promptsService: PromptsService) {}
+
+   @Get(':id/:version/children')
+    @ApiOperation({ summary: 'Get all child prompts' })
+    @ApiResponse({ status: 200, description: 'Return all child prompts' })
+    async getPromptChildren(
+      @Param('id') id: string,
+      @Param('version') version: string
+    ): Promise<Prompt[]> {
+      return this.promptsService.getPromptChildren(`${id}_${version}`);
+    }
+
+  @Patch(':id/:version')
+  async updatePromptParent(
+    @Param('id') id: string,
+    @Param('version') version: string,
+    @Body() updateDto: { parentId: string | null }
+  ): Promise<Prompt> {
+    try {
+      return await this.promptsService.updatePrompt(id, version, updateDto);
+    } catch (error: any) {
+      this.logger.error(`Error updating prompt parent: ${error.message}`, error.stack);
+      throw error;
+    }
+  }
 
   @Get()
   @ApiOperation({ summary: 'Get all prompts' })

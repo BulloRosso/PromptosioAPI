@@ -4,8 +4,7 @@ import { StorageService } from '../storage/storage.service';
 import { 
   Prompt, 
   PromptExecutionResult, 
-  PromptExecutionContext,
-  Condition 
+  PromptMetadata
 } from '../types/prompt.types';
 import { CreatePromptDto, UpdatePromptDto } from './dto';
 import { v4 as uuidv4 } from 'uuid';
@@ -52,6 +51,32 @@ export class PromptsService {
     return prompt;
   }
 
+  async getPromptChildren(parentId: string): Promise<Prompt[]> {
+    // Use getSubPrompts directly, which already handles the empty case
+    return this.storageService.getSubPrompts(parentId);
+  }
+
+  async updatePromptParent(
+    id: string,
+    version: string,
+    parentId: string | null
+  ): Promise<Prompt> {
+    const prompt = await this.getPrompt(id, version);
+
+    // Use underscore for parentId format
+    const updatedPrompt: Prompt = {
+      ...prompt,
+      parentId: parentId ? `${parentId.replace('-', '_')}` : null,
+      metadata: {
+        ...prompt.metadata,
+        updatedAt: new Date().toISOString()
+      } as PromptMetadata
+    };
+
+    await this.storageService.savePrompt(updatedPrompt);
+    return updatedPrompt;
+  }
+  
   async getPrompt(id: string, version: string): Promise<Prompt> {
     return this.storageService.getPrompt(id, version);
   }

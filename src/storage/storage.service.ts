@@ -36,18 +36,19 @@ export class StorageService {
 
   async getPrompt(id: string, version: string): Promise<Prompt> {
     const fileName = `prompts/${id}_${version}.json`;
-    const {
-      ok,
-      value: textValue,
-      error,
-    } = await this.client.downloadAsText(fileName);
+    const result = await this.client.downloadAsText(fileName);
 
-    if (!ok) {
-      this.logger.error(`Failed to get prompt: ${fileName}`, error);
-      throw new Error(`Failed to get prompt: ${error}`);
+    if (!result.ok || !result.value) {
+      this.logger.error(`Failed to get prompt: ${fileName}`, result.error);
+      throw new Error(`Prompt not found: ${id} version ${version}`);
     }
 
-    return JSON.parse(textValue);
+    try {
+      return JSON.parse(result.value);
+    } catch (error) {
+      this.logger.error(`Error parsing prompt file: ${fileName}`, error);
+      throw new Error(`Invalid prompt data for ${id} version ${version}`);
+    }
   }
 
   async deletePrompt(id: string, version: string): Promise<void> {
@@ -121,7 +122,7 @@ export class StorageService {
 
   async getSubPrompts(parentId: string): Promise<Prompt[]> {
     const allPrompts = await this.listPrompts();
-    return allPrompts.filter((prompt) => prompt.parentId === parentId);
+    return allPrompts.filter(prompt => prompt.parentId === parentId);
   }
 
   private isValidPrompt(obj: any): obj is Prompt {
